@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('Full_name');
             $table->string('role');
-            $table->unsignedBigInteger('id_teams');
-            $table->foreign('id_teams')->references('id')->on('teams');
+            $table->unsignedBigInteger('team_id');
+            $table->foreign('team_id')->references('id')->on('teams');
         });
     }
 
