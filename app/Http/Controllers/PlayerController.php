@@ -80,10 +80,15 @@ class PlayerController extends Controller
 
     public function destroy(string $id): \Illuminate\Http\RedirectResponse
     {
+        if (!\Illuminate\Support\Facades\Gate::allows('destroy-player', Player::find($id))) {
+            return redirect('/error')->with('message', 'У вас нет прав администрирования!');
+        }
         $player = Player::findOrFail($id);
         $player->delete();
 
-        return redirect()->route('players.index')->with('success', 'Игрок успешно удалён');
+        Player::destroy($id);
+        return redirect('/players');
+        }
     }
 
-}
+
