@@ -18,11 +18,13 @@ class PlayerController extends Controller
    Метод show: Используется для отображения конкретной записи по ID.
    Например, показывать детали одной команды или одного игрока.
    Этот метод обычно принимает идентификатор записи и показывает информацию об этой конкретной записи.*/
-    public function index()
+    public function index(Request $request)
     {
-        $players = Player::all(); // Получаем всех игроков
-        return view('players_index', compact('players'));
+        $perpage = $request->perpage ?? 10;
+        $players = Player::paginate($perpage)->withQueryString(); // Получаем 10 игроков на страницу
+        return view('players_index', ['players' => $players]);
     }
+
     /**
      * Display the specified resource.
      */
@@ -38,7 +40,7 @@ class PlayerController extends Controller
     public function create(): \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory|\Illuminate\Foundation\Application
     {
         $teams = Team::all(); // Получаем все команды
-        return view('player_create', compact('teams'));
+        return view('player_create', ['teams' => $teams]);
     }
 
     public function store(Request $request)

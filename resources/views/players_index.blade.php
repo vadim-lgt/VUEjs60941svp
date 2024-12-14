@@ -43,6 +43,7 @@
         @endforeach
         </tbody>
     </table>
+    {{ $players->links() }}
 
     <a href="{{ route('player_create') }}" class="btn btn-primary">Добавить нового игрока</a>
 </div>
