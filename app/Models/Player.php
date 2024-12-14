@@ -22,6 +22,11 @@ class Player extends Model
     {
         return $this->belongsToMany( Matches::class,   'goal');//к модели.
     }
-
+    protected $fillable = [
+        'Full_name',
+        'role',
+        'team_id',
+    ];
+    public $timestamps = false;
 }
 
