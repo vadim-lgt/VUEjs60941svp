@@ -5,10 +5,10 @@ use App\Http\Controllers\PlayerController;
 use App\Http\Controllers\TeamController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
+/*Route::get('/', function () {
     return view('welcome');
-});
-
+});*/
+Route::get('/', [\App\Http\Controllers\PlayerController::class, 'index']);
 Route::get('/hello', function () {
     return view('hello', ['title' => 'Hello World!']);
 });
@@ -18,13 +18,13 @@ Route::get('/hello', function () {
 });
 //php artisan serve запускать сервер!!!!!!!!!!
 //В следующих 4 реализована связь один-ко-многим
-Route::get('/team_show/{id}', [TeamController::class, 'show']);
+Route::get('/team_show/{id}', [TeamController::class, 'show'])->name('team_show');
 //http://127.0.0.1:8000/team_show/4
 
 Route::get('/player_show/{id}', [PlayerController::class, 'show']);
 //http://127.0.0.1:8000/player_show/5
 //Тут реализована связь многие-ко-многим и sql-запрос
-Route::get('/matches_show/{id}', [MatchesController::class, 'show']);
+Route::get('/matches_show/{id}', [MatchesController::class, 'show'])->name('matches_show');
 //http://127.0.0.1:8000/matches_show/3
 //все, что выше это 4 задание
 
@@ -33,7 +33,7 @@ Route::get('/team_index', [TeamController::class, 'index']);
 //php artisan route:clear для очистки кэша. Можно передавать запросы с параметром,
 // чтобы не отображалась страница по старому кэшу(из-за этого у меня не отображалась)
 
-Route::get('/players', [PlayerController::class, 'index'])->name('players.index');// 4 задание было, но с 5 изменено
+Route::resource('players', PlayerController::class);// 4 задание было, но с 5 изменено
 Route::get('/players/create', [PlayerController::class, 'create'])->name('player_create')->middleware('auth');;
 Route::post('/players', [PlayerController::class, 'store'])->name('player_store');
 Route::get('/players/{id}/edit', [PlayerController::class, 'edit'])->name('player_edit')->middleware('auth');;
@@ -46,8 +46,10 @@ Route::delete('/players/{id}', [PlayerController::class, 'destroy'])->name('play
 //http://127.0.0.1:8000/players    - Список игроков, с возможностью добавлять/удалять/редактировать
 //http://127.0.0.1:8000/matches_show/4  - Игроки матча 4 забивших гол, Тут реализована связь многие-ко-многим и sql-запрос
 
-Route::get('/login', [\App\Http\Controllers\LoginController::class, 'login']);
+Route::get('/login', [\App\Http\Controllers\LoginController::class, 'login'])->name('login');
 Route::get('/logout', [\App\Http\Controllers\LoginController::class, 'logout']);
 Route::post('/auth', [\App\Http\Controllers\LoginController::class, 'authenticate']);
 Route::get('/error', function (){    return view('error', ['message' => session('message')]);});
+//http://127.0.0.1:8000/login
+Route::get('/matches_index', [\App\Http\Controllers\MatchesController::class, 'index'])->name('/matches_index');
 //http://127.0.0.1:8000/login

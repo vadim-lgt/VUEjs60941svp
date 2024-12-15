@@ -57,14 +57,17 @@ class PlayerController extends Controller
         return redirect()->route('players.index')->with('success', 'Игрок успешно добавлен');
     }
 
-    public function edit(string $id): \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory|\Illuminate\Foundation\Application
+    public function edit(string $id)
     {
+        if (!\Illuminate\Support\Facades\Auth::check()) {
+            return redirect('/players')->withErrors(['error' => 'Вы не авторизованы для редактирования записи.']);
+        }
         $player = Player::findOrFail($id);
-        $teams = Team::all(); // Получаем все команды
-        return view('player_edit', compact('player', 'teams'));
+        $teams = Team::all();
+        return view('player_edit', ['player' => $player, 'teams' => $teams]);
     }
 
-    public function update(Request $request, string $id): \Illuminate\Http\RedirectResponse
+    public function update(Request $request, string $id)
     {
         $validatedData = $request->validate([
             'Full_name' => 'required|string|max:255',
@@ -81,14 +84,14 @@ class PlayerController extends Controller
     public function destroy(string $id): \Illuminate\Http\RedirectResponse
     {
         if (!\Illuminate\Support\Facades\Gate::allows('destroy-player', Player::find($id))) {
-            return redirect('/error')->with('message', 'У вас нет прав администрирования!');
+            return redirect('/players')->withErrors(['error' => 'У вас нет прав администрирования!']);
         }
         $player = Player::findOrFail($id);
         $player->delete();
 
         Player::destroy($id);
-        return redirect('/players');
-        }
+        return redirect('/players')->withErrors(['success' => 'Запись удалена.']);
     }
+}
 
 

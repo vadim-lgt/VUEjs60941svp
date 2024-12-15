@@ -21,7 +21,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Paginator::defaultView('pagination::default');
+        Paginator::defaultView('pagination::bootstrap-4');
         \Illuminate\Support\Facades\Gate::define('destroy-player', function (User $user) {
             return $user->id == 1;
         });

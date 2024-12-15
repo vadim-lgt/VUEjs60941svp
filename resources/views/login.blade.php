@@ -1,3 +1,4 @@
+{{--
 <!doctype html>
 <html lang="en">
 <head>
@@ -37,3 +38,7 @@
 </body>
 </html>
 
+--}}
+@extends('layout')
+@section('content')
+@endsection

@@ -11,6 +11,7 @@ class MatchesController extends Controller
      * Display the specified resource.
      */
     //Здесь реализована связь многие-ко-многим
+
     public function show(string $id): \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory|\Illuminate\Foundation\Application
     {
         // Получаем идентификаторы команд из таблицы matches для указанного матча $id
@@ -61,7 +62,13 @@ class MatchesController extends Controller
      */
     public function index()
     {
-        //
+        $matches = Matches::all();
+        $matches = DB::table('matches')
+            ->join('teams as team1', 'matches.com1_id', '=', 'team1.id')
+            ->join('teams as team2', 'matches.com2_id', '=', 'team2.id')
+            ->select('matches.id', 'team1.name as team1_name', 'team2.name as team2_name')
+            ->get();
+        return view('matches_index', compact('matches'));
     }
 
     /**

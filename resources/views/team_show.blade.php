@@ -1,29 +1,38 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>60941</title>
-</head>
-<body>
-    <h2>{{ $team_show ? "Список игроков команды " .$team_show-> name : "Неверный ID команды" }}</h2>{{--переменные(2) из контроллера--}}
-    @if($team_show)
-        <table border="1">
-            <thead>
-            <td>id</td>
-            <td>Полное имя</td>
-            <td>амплуа</td>
-            <td>ID команды</td>
-            </thead>
-            @foreach ($team_show->player as $player){{--player это функция в модели(отношение), элемент списка.....--}}
-                <tr>
-                    <td>{{$player->id}}</td>
-                    <td>{{$player->Full_name}}</td>
-                    <td>{{$player->role}}</td>
-                    <td>{{$player->team_id}}</td>
-                </tr>
-            @endforeach
-        </table>
-    @endif
-</body>
-</html>>
+@extends('layout')
 
+@section('content')
+    <div class="container mt-5">
+        <h2 class="text-center mb-4 text-primary">
+            {{ $team_show ? "Список игроков команды " . $team_show->name : "Неверный ID команды" }}
+        </h2>
+
+        @if($team_show)
+            <div class="row justify-content-center">
+                <div class="col-lg-8 col-md-10">
+                    <div class="table-responsive shadow-sm bg-light p-3 rounded">
+                        <table class="table align-middle">
+                            <thead class="bg-primary text-white">
+                            <tr>
+                                <th scope="col">Полное имя</th>
+                                <th scope="col">Амплуа</th>
+                            </tr>
+                            </thead>
+                            <tbody class="table-light">
+                            @foreach ($team_show->player as $player)
+                                <tr>
+                                    <td class="fw-semibold">{{ $player->Full_name }}</td>
+                                    <td>{{ $player->role }}</td>
+                                </tr>
+                            @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        @else
+            <div class="alert alert-danger text-center">
+                Неверный ID команды.
+            </div>
+        @endif
+    </div>
+@endsection
