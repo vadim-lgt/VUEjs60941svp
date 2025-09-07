@@ -26,4 +26,5 @@ class AppServiceProvider extends ServiceProvider
             return $user->id == 1;
         });
     }
+
 }
