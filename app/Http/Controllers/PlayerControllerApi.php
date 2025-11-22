@@ -4,12 +4,31 @@ namespace App\Http\Controllers;
 
 use App\Models\Player;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class PlayerControllerApi extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        return response()->json(Player::all());
+        return response(
+            DB::table('player')
+                ->join('teams', 'player.team_id', '=', 'teams.id')
+                ->select(
+                    'player.id',
+                    'player.Full_name',
+                    'player.role',
+                    'teams.name as team_name'
+                )
+                ->orderBy('player.id', 'asc')
+                ->limit($request->perpage ?? 5)
+                ->offset(($request->perpage ?? 5) * ($request->page ?? 0))
+                ->get()
+        );
+    }
+
+    public function total()
+    {
+        return response(Player::all()->count());
     }
 
     public function show(string $id): \Illuminate\Http\JsonResponse
