@@ -25,6 +25,12 @@ class PlayerControllerApi extends Controller
                 ->get()
         );
     }
+//    public function index(Request $request)   ЭТО БЕЗ ОТОБОРАЖЕНИЯ НАИМЕНОВАНИЙ КОМАНД, ТОЛЬКО ПО ID
+//    {
+//        return response(Player::limit($request->perpage ?? 5)
+//            ->offset(($request->perpage ?? 5) * ($request->page ?? 0))
+//            ->get());
+//    }
 
     public function total()
     {

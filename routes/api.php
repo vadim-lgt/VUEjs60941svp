@@ -50,6 +50,7 @@ Route::middleware('auth:sanctum')->group(function () {
     });
     // Logout (деактивация токена)
     Route::get('/logout', [AuthController::class, 'logout']);
+    Route::post('/matches', [MatchesControllerApi::class, 'store']);
 });
 
 //2 задание!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
